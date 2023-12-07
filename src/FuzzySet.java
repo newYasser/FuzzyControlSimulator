@@ -6,9 +6,9 @@ public class FuzzySet
 
 
     private String name,type;
-    private List<Integer>values;
+    private List<FuzzySetPoints>values;
 
-    FuzzySet(String name, String type,List<Integer> values)
+    FuzzySet(String name, String type,List<FuzzySetPoints> values)
     {
         setName(name);
         setType(type);
@@ -19,12 +19,12 @@ public class FuzzySet
 
     }
 
-    public List<Integer> getValues()
+    public List<FuzzySetPoints> getValues()
     {
         return values;
     }
 
-    public void setValues(List<Integer> values)
+    public void setValues(List<FuzzySetPoints> values)
     {
         this.values = values;
     }
