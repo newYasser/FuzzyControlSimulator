@@ -105,7 +105,17 @@ public class Main {
         fuzzifier.fuzzification(exp,40.0);
 
         fuzzifier.AddElementToVariablesList(project);
-        fuzzifier.fuzzification(project,50.0);
+        fuzzifier.fuzzification(project,65.0);
+
+
+        fuzzifier.populateVariablesMap();
+
+        Map<String,LinguisticVariable>linguisticVariableMap = fuzzifier.getVariablesNames();
+
+        Map<String,List<Double>>projectMap = project.getFuzzificationAnswer();
+
+        Map<String,List<Double>> expMap = exp.getFuzzificationAnswer();
+
 
 
 
