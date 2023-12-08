@@ -8,14 +8,14 @@ public class FuzzySet
     private String name,type;
     private List<FuzzySetPoints>values;
 
-    FuzzySet(String name, String type,List<FuzzySetPoints> values)
+    FuzzySet(String name, String type,List<FuzzySetPoints> val)
     {
         setName(name);
         setType(type);
         if(type.equals("TRI")) values = new ArrayList<>(3);
         else values = new ArrayList<>(4);
 
-        setValues(values);
+        setValues(val);
 
     }
 

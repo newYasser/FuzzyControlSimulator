@@ -80,7 +80,7 @@ public class Fuzzifier
         variablesList = new ArrayList<>();
         variablesNames = new HashMap<>();
     }
-    private void AddElementToVariablesList(LinguisticVariable variable)
+    public void AddElementToVariablesList(LinguisticVariable variable)
     {
         variablesList.add(variable);
     }
