@@ -7,8 +7,8 @@ public class Fuzzifier
 {
 
 
-    private List<Variables>variablesList;
-    private Map<String, Variables>variablesNames;
+    private List<LinguisticVariable>variablesList;
+    private Map<String, LinguisticVariable>variablesNames;
 
     private boolean checkWithinRange(Double crisp, List<FuzzySetPoints>fuzzySetValues)
     {
@@ -19,11 +19,11 @@ public class Fuzzifier
         return false;
     }
 
-    void fuzzification(Variables currentVariable, Double crispValue)
+    void fuzzification(LinguisticVariable currentVariable, Double crispValue)
     {
         List<FuzzySet> fuzzySetList = new ArrayList<>();
         fuzzySetList= currentVariable.getFuzzySetList();
-        Map<String,Double>ans = new HashMap<>();
+        Map<String,List<Double>>ans = new HashMap<>();
 
         for(int i =0; i < fuzzySetList.size(); ++i)
         {
@@ -43,7 +43,9 @@ public class Fuzzifier
                         {
                             if(j == 1 )
                             {
-                                ans.put(fuzzySetList.get(i).getName(),1.0);
+                                List<Double>values =new ArrayList<>();
+                                values.add(1.0);
+                                ans.put(fuzzySetList.get(i).getName(),values);
                                 break;
                             }
                         }
@@ -57,10 +59,15 @@ public class Fuzzifier
                 // calculating the line equation
                 double slope = (double) ((double)point2[1] - point1[1]) / (point2[0] - point1[0]);
                 double b = point2[1] - (slope * point2[0]);
-                double y = slope * crispValue + b;
-                ans.put(fuzzySetList.get(i).getName(),y);
+                Double y = slope * crispValue + b;
+                List<Double>values =new ArrayList<>();
+                values.add(y);
+                ans.put(fuzzySetList.get(i).getName(),values);
             }
-            else ans.put(fuzzySetList.get(i).getName(),0.0);
+            else{
+                List<Double>values =new ArrayList<>();
+                values.add(0.0);
+                ans.put(fuzzySetList.get(i).getName(),values);}
         }
 
         currentVariable.setFuzzificationAnswer(ans);
@@ -73,33 +80,34 @@ public class Fuzzifier
         variablesList = new ArrayList<>();
         variablesNames = new HashMap<>();
     }
-    private void AddElementToVariablesList(Variables variable)
+    private void AddElementToVariablesList(LinguisticVariable variable)
     {
         variablesList.add(variable);
     }
 
     void populateVariablesMap()
     {
-        for(Variables list : variablesList)variablesNames.put(list.getName(),list);
+        for(LinguisticVariable linguisticVariable : variablesList)
+            variablesNames.put(linguisticVariable.getName(),linguisticVariable);
     }
 
 
-    public List<Variables> getVariablesList()
+    public List<LinguisticVariable> getVariablesList()
     {
         return variablesList;
     }
 
-    public void setVariablesList(List<Variables> variablesList)
+    public void setVariablesList(List<LinguisticVariable> variablesList)
     {
         this.variablesList = variablesList;
     }
 
-    public Map<String, Variables> getVariablesNames()
+    public Map<String, LinguisticVariable> getVariablesNames()
     {
         return variablesNames;
     }
 
-    public void setVariablesNames(Map<String, Variables> variablesNames)
+    public void setVariablesNames(Map<String, LinguisticVariable> variablesNames)
     {
         this.variablesNames = variablesNames;
     }

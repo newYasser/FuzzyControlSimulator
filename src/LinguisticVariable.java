@@ -3,7 +3,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Variables
+public class LinguisticVariable
 {
 
 
@@ -14,17 +14,17 @@ public class Variables
 
     private List<FuzzySet>fuzzySetList;
 
-    private Map<String,Double>fuzzificationAnswer;
+    private Map<String,List<Double>>fuzzificationAnswers;
 
 
-    Variables(String type, String name, Integer upperRang, Integer lowerRange)
+    LinguisticVariable(String type, String name, Integer upperRang, Integer lowerRange)
     {
         setType(type);
         setName(name);
         setLowerRange(lowerRange);
         setUpperRang(upperRang);
         fuzzySetList = new ArrayList<>();
-        fuzzificationAnswer = new HashMap<>();
+        fuzzificationAnswers = new HashMap<>();
     }
     public String getType()
     {
@@ -82,11 +82,28 @@ public class Variables
         this.fuzzySetList = fuzzySetList;
     }
 
-    public Map<String, Double> getFuzzificationAnswer() {
-        return fuzzificationAnswer;
+    public Map<String, List<Double>> getFuzzificationAnswer() {
+        return fuzzificationAnswers;
     }
 
-    public void setFuzzificationAnswer(Map<String, Double> fuzzificationAnswer) {
-        this.fuzzificationAnswer = fuzzificationAnswer;
+    public void setFuzzificationAnswer(Map<String, List<Double>> fuzzificationAnswer) {
+        this.fuzzificationAnswers = fuzzificationAnswer;
     }
+    public int getFuzzySetIdxByName(String fuzzySetName){
+        for(int i = 0; i < fuzzySetList.size();++i){
+            if(fuzzySetList.get(i).getName().equals(fuzzySetName)){
+                return i;
+            }
+        }
+        return -1; // doesn't exists
+    }
+
+    public FuzzySet getFuzzySetByName(String fuzzySetName){
+        for(FuzzySet fuzzySet:fuzzySetList){
+            if(fuzzySet.getName().equals(fuzzySetName))
+                return fuzzySet;
+        }
+        return null;
+    }
+
 }
