@@ -34,6 +34,7 @@ public class Fuzzifier
             {
                 int[] point1 = new int[2];
                 int[] point2 = new int[2];
+                boolean flag = true;
 
                 for(int j = 0; j < fuzzySetValues.size()-1; ++j)
                 {
@@ -46,6 +47,7 @@ public class Fuzzifier
                                 List<Double>values =new ArrayList<>();
                                 values.add(1.0);
                                 ans.put(fuzzySetList.get(i).getName(),values);
+                                flag = false;
                                 break;
                             }
                         }
@@ -57,12 +59,15 @@ public class Fuzzifier
                 }
                 //y = ax + b
                 // calculating the line equation
-                double slope = (double) ((double)point2[1] - point1[1]) / (point2[0] - point1[0]);
-                double b = point2[1] - (slope * point2[0]);
-                Double y = slope * crispValue + b;
-                List<Double>values =new ArrayList<>();
-                values.add(y);
-                ans.put(fuzzySetList.get(i).getName(),values);
+               if(flag)
+               {
+                   double slope = (double) ((double)point2[1] - point1[1]) / (point2[0] - point1[0]);
+                   double b = point2[1] - (slope * point2[0]);
+                   Double y = slope * crispValue + b;
+                   List<Double>values =new ArrayList<>();
+                   values.add(y);
+                   ans.put(fuzzySetList.get(i).getName(),values);
+               }
             }
             else{
                 List<Double>values =new ArrayList<>();
