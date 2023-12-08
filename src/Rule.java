@@ -13,7 +13,7 @@ public class Rule {
         }
     }
 
-    public String[]getRule(){
+    public String[] splitTheRule(){
         return splitedRuleStatement;
     }
 
