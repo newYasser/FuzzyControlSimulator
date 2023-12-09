@@ -17,11 +17,11 @@ public class Inference {
     private Double getValueFromFuzzifiedVariables(String LinguisticVariable,String fuzzySet){
         Double value = fuzzifiedVariables.get(LinguisticVariable)
                 .getFuzzificationAnswer()
-                .get(fuzzySet).get(0);  
+                .get(fuzzySet).get(0);
         return value;
     }
-    private LinguisticVariable solveRules(){
-        Map<String, List<Double>> inferencedFuzzySets = null;
+    public LinguisticVariable solveRules(){
+        Map<String, List<Double>> inferencedFuzzySets = new HashMap<>();
         for(Rule rule:rules){
             String[] temp = rule.splitTheRule();
             List<Double>tempList = new ArrayList<>();
@@ -31,27 +31,35 @@ public class Inference {
             String[]rule = i.splitTheRule();
             Double[] answers = new Double[rule.length];
             Arrays.fill(answers,0.0);
-            Double value1,value2,outputAnswer = 0.0;
-            for(int j = 0; rule[j].equals("=>");++j){
-                if(rule[j].equals("not")){
-                    value1 = getValueFromFuzzifiedVariables(rule[j+1],rule[j+2]);
-                    answers[j] = 1-value1;
+            Double outputAnswer = 0.0;
+            for(int j = 0; !rule[j].equals("=>");++j){
+                if(!(rule[j].equals("or") ||rule[j].equals("and") || rule[j].equals("not"))){
+                    answers[j + 1] = getValueFromFuzzifiedVariables(rule[j],rule[j+1]);
+                    j++;
                 }
             }
-            for(int j = 0;rule[j].equals("=>");++j){
-                if(rule[j].equals("and")){
-                    value1 = getValueFromFuzzifiedVariables(rule[j-2],rule[j-1]);
+            for(int j = 0; !rule[j].equals("=>");++j){
+                if(rule[j].equals("not")){
+                    answers[j + 1] = 1 - answers[j + 1];
+                }
+            }
+            for(int j = 0; !rule[j].equals("=>");++j){
+                if(rule[j].equals("or")){
                     if(rule[j + 1].equals("not")){
-                        answers[j] = Double.min(answers[j+1],value1);
+                        answers[j] = Double.min(answers[j + 3],answers[j-1]);
+                        answers[j + 3] = 0.0;
+                        answers[j - 1] = 0.0;
                     }
                     else{
-                        value2 = getValueFromFuzzifiedVariables(rule[j+1],rule[j+2]);
-                        answers[j] = Double.min(value1,value2);
+                        answers[j] = Double.min(answers[j - 1],answers[j +  2]);
+                        answers[j - 1] = 0.0;
+                        answers[j +  2] = 0.0;
                     }
                 }
             }
-            for(int j = 0; j < answers.length;++j){
-                outputAnswer = Double.max(outputAnswer,answers[0]);
+
+            for(int j = 0; !rule[j].equals("=>");++j){
+                outputAnswer = Double.max(outputAnswer,answers[j]);
             }
 
             inferencedFuzzySets.get(rule[rule.length-1]).add(outputAnswer);
