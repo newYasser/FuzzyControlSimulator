@@ -20,6 +20,8 @@ public class Inference {
                 .get(fuzzySet).get(0);
         return value;
     }
+
+
     public LinguisticVariable solveRules(){
         Map<String, List<Double>> inferencedFuzzySets = new HashMap<>();
         for(Rule rule:rules){
@@ -32,6 +34,7 @@ public class Inference {
             Double[] answers = new Double[rule.length];
             Arrays.fill(answers,0.0);
             Double outputAnswer = 0.0;
+            boolean thereIsOr = false;
             for(int j = 0; !rule[j].equals("=>");++j){
                 if(!(rule[j].equals("or") ||rule[j].equals("and") || rule[j].equals("not"))){
                     answers[j + 1] = getValueFromFuzzifiedVariables(rule[j],rule[j+1]);
@@ -42,9 +45,10 @@ public class Inference {
                 if(rule[j].equals("not")){
                     answers[j + 1] = 1 - answers[j + 1];
                 }
+                if(rule[j].equals("or")) thereIsOr = true;
             }
             for(int j = 0; !rule[j].equals("=>");++j){
-                if(rule[j].equals("or")){
+                if(rule[j].equals("and")){
                     if(rule[j + 1].equals("not")){
                         answers[j] = Double.min(answers[j + 3],answers[j-1]);
                         answers[j + 3] = 0.0;
@@ -57,11 +61,16 @@ public class Inference {
                     }
                 }
             }
-
-            for(int j = 0; !rule[j].equals("=>");++j){
-                outputAnswer = Double.max(outputAnswer,answers[j]);
+            if(thereIsOr) {
+                for (int j = 0; !rule[j].equals("=>"); ++j) {
+                    outputAnswer = Double.max(outputAnswer, answers[j]);
+                }
             }
-
+            else {
+                for (int j = 0; !rule[j].equals("=>"); ++j) {
+                    outputAnswer = Double.min(outputAnswer, answers[j]);
+                }
+            }
             inferencedFuzzySets.get(rule[rule.length-1]).add(outputAnswer);
         }
         outputVariable.setFuzzificationAnswer(inferencedFuzzySets);
