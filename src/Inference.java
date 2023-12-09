@@ -34,6 +34,7 @@ public class Inference {
             Double[] answers = new Double[rule.length];
             Arrays.fill(answers,0.0);
             Double outputAnswer = 0.0;
+            List<Integer>orsIndexes = new ArrayList<>();
             boolean thereIsOr = false;
             for(int j = 0; !rule[j].equals("=>");++j){
                 if(!(rule[j].equals("or") ||rule[j].equals("and") || rule[j].equals("not"))){
@@ -53,22 +54,25 @@ public class Inference {
                         answers[j] = Double.min(answers[j + 3],answers[j-1]);
                         answers[j + 3] = 0.0;
                         answers[j - 1] = 0.0;
+                        orsIndexes.add(j);
                     }
                     else{
                         answers[j] = Double.min(answers[j - 1],answers[j +  2]);
                         answers[j - 1] = 0.0;
                         answers[j +  2] = 0.0;
+                        orsIndexes.add(j);
                     }
                 }
             }
             if(thereIsOr) {
                 for (int j = 0; !rule[j].equals("=>"); ++j) {
-                    outputAnswer = Double.max(outputAnswer, answers[j]);
+                       outputAnswer = Double.max(outputAnswer, answers[j]);
                 }
             }
             else {
-                for (int j = 0; !rule[j].equals("=>"); ++j) {
-                    outputAnswer = Double.min(outputAnswer, answers[j]);
+                outputAnswer = answers[orsIndexes.get(0)];
+                for (int j = 1; j < orsIndexes.size(); ++j) {
+                       outputAnswer = Double.min(outputAnswer, answers[orsIndexes.get(j)]);
                 }
             }
             inferencedFuzzySets.get(rule[rule.length-1]).add(outputAnswer);
