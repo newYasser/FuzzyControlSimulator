@@ -33,6 +33,9 @@ public class Main {
                         "3- Add rules.\n" +
                         "4- Run the simulation on crisp values.\n");
                 menuOption = input.nextLine();
+                if (menuOption.equalsIgnoreCase("")) {
+                    menuOption = input.nextLine();
+                }
                 switch (menuOption) {
                     case "1":
                         System.out.println("Enter the variable’s name, type (IN/OUT) and range ([lower, upper]):\n" +
@@ -40,6 +43,9 @@ public class Main {
                         String variableName, variableType;
                         Integer upperBound, lowerBound;
                         variableName = input.next();
+                        if (variableName.equalsIgnoreCase("x")) {
+                            break;
+                        }
                         while (!variableName.equalsIgnoreCase("x")) {
                             variableType = input.next();
                             upperBound = input.nextInt();
@@ -49,6 +55,7 @@ public class Main {
                             System.out.println("The variable added");
                             variableName = input.next();
                         }
+
                         break;
                     case "2":
                         if (linguisticVariables.isEmpty()) {
