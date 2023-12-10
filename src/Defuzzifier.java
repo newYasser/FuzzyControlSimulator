@@ -1,6 +1,4 @@
-import java.rmi.dgc.Lease;
 import java.util.List;
-import java.util.Map;
 
 public class Defuzzifier {
     private LinguisticVariable outputLinguisticVariable;
@@ -9,11 +7,11 @@ public class Defuzzifier {
         this.outputLinguisticVariable = outputLinguisticVariable;
     }
 
-    public Double PerformDefuzzification(){
+    public Double performDefuzzification(){
         Double numerator = 0.0,denominator = 0.0;
         for(FuzzySet fuzzySet: outputLinguisticVariable.getFuzzySetList()){
             Double operation = 0.0,maxValue = 0.0;;
-            for(FuzzySetPoints fuzzySetPoints : fuzzySet.getValues()){
+            for(FuzzySetPoint fuzzySetPoints : fuzzySet.getValues()){
                 operation += fuzzySetPoints.getX();
             }
             operation /= fuzzySet.getValues().size();

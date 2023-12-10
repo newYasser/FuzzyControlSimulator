@@ -6,11 +6,10 @@ import java.util.Map;
 public class Fuzzifier
 {
 
-
     private List<LinguisticVariable>variablesList;
     private Map<String, LinguisticVariable>variablesNames;
 
-    private boolean checkWithinRange(Double crisp, List<FuzzySetPoints>fuzzySetValues)
+    private boolean checkWithinRange(Double crisp, List<FuzzySetPoint>fuzzySetValues)
     {
         for(int i = 0; i < fuzzySetValues.size()-1; ++i)
         {
@@ -27,7 +26,7 @@ public class Fuzzifier
 
         for(int i =0; i < fuzzySetList.size(); ++i)
         {
-            List<FuzzySetPoints>fuzzySetValues = new ArrayList<>();
+            List<FuzzySetPoint>fuzzySetValues = new ArrayList<>();
             fuzzySetValues = fuzzySetList.get(i).getValues();
 
             if(checkWithinRange(crispValue,fuzzySetValues))
@@ -76,7 +75,7 @@ public class Fuzzifier
         }
 
         currentVariable.setFuzzificationAnswer(ans);
-
+        addElementToVariablesList(currentVariable);
 
     }
 
@@ -85,12 +84,12 @@ public class Fuzzifier
         variablesList = new ArrayList<>();
         variablesNames = new HashMap<>();
     }
-    public void AddElementToVariablesList(LinguisticVariable variable)
+    public void addElementToVariablesList(LinguisticVariable variable)
     {
         variablesList.add(variable);
     }
 
-    void populateVariablesMap()
+    public void populateVariablesMap()
     {
         for(LinguisticVariable linguisticVariable : variablesList)
             variablesNames.put(linguisticVariable.getName(),linguisticVariable);

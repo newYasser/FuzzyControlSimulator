@@ -1,14 +1,14 @@
-public class FuzzySetPoints
+public class FuzzySetPoint
 {
     private Integer x;
     private Integer y;
 
-    FuzzySetPoints()
+    FuzzySetPoint()
     {
         setX(0);
         setY(0);
     }
-    FuzzySetPoints(Integer x, Integer y)
+    FuzzySetPoint(Integer x, Integer y)
     {
         setX(x);
         setY(y);

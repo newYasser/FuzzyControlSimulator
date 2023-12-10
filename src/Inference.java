@@ -7,11 +7,11 @@ public class Inference {
     public Inference(Map<String, LinguisticVariable> fuzzifiedVariables,List<Rule>rules){
         this.rules = rules;
         this.fuzzifiedVariables = fuzzifiedVariables;
-        String[]temp = rules.get(0).splitTheRule(); // to get the output variable
-        outputVariable = fuzzifiedVariables.get(temp[temp.length - 2]);
+        String[]temp = rules.get(0).getSplitTheRule(); // to get the output variable
+        this.outputVariable = getOutputVariable(temp[temp.length - 2]);
     }
-    private LinguisticVariable getOutputVariable(String outputVariable){
-        return fuzzifiedVariables.get(outputVariable);
+    private LinguisticVariable getOutputVariable(String outputVariableName){
+        return fuzzifiedVariables.get(outputVariableName);
     }
 
     private Double getValueFromFuzzifiedVariables(String LinguisticVariable,String fuzzySet){
@@ -25,12 +25,12 @@ public class Inference {
     public LinguisticVariable solveRules(){
         Map<String, List<Double>> inferencedFuzzySets = new HashMap<>();
         for(Rule rule:rules){
-            String[] temp = rule.splitTheRule();
+            String[] temp = rule.getSplitTheRule();
             List<Double>tempList = new ArrayList<>();
             inferencedFuzzySets.put(temp[temp.length - 1],tempList);
         }
         for(Rule i:rules){
-            String[]rule = i.splitTheRule();
+            String[]rule = i.getSplitTheRule();
             Double[] answers = new Double[rule.length];
             Arrays.fill(answers,0.0);
             Double outputAnswer = 0.0;
@@ -77,7 +77,7 @@ public class Inference {
             }
             inferencedFuzzySets.get(rule[rule.length-1]).add(outputAnswer);
         }
-        outputVariable.setFuzzificationAnswer(inferencedFuzzySets);
+        this.outputVariable.setFuzzificationAnswer(inferencedFuzzySets);
         return outputVariable;
     }
 

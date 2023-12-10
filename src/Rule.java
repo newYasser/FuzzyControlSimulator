@@ -5,7 +5,7 @@ public class Rule {
         this.splitedRuleStatement = statement.split(" ");
     }
 
-    public String[] splitTheRule(){
+    public String[] getSplitTheRule(){
         return splitedRuleStatement;
     }
 
