@@ -43,9 +43,6 @@ public class Main {
                         String variableName, variableType;
                         Integer upperBound, lowerBound;
                         variableName = input.next();
-                        if (variableName.equalsIgnoreCase("x")) {
-                            break;
-                        }
                         while (!variableName.equalsIgnoreCase("x")) {
                             variableType = input.next();
                             upperBound = input.nextInt();
