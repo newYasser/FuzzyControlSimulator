@@ -74,8 +74,17 @@ public class Main {
                                     Integer x = input.nextInt();
                                     FuzzySetPoint point = new FuzzySetPoint();
                                     point.setX(x);
+                                    point.setY(0);
                                     fuzzySetPoints.add(point);
                                 }
+                                if(fuzzySetType.equalsIgnoreCase("TRI")){
+                                    fuzzySetPoints.get(1).setY(1);
+                                }
+                                if(fuzzySetType.equalsIgnoreCase("TRAP")){
+                                    fuzzySetPoints.get(1).setY(1);
+                                    fuzzySetPoints.get(2).setY(1);
+                                }
+
                                 fuzzySets.add(new FuzzySet(fuzzySetName, fuzzySetType, fuzzySetPoints));
                                 System.out.println("Fuzzy set added");
                                 fuzzySetName = input.next();
@@ -113,10 +122,22 @@ public class Main {
                         Map<String, LinguisticVariable> fuzzifiedVariables = fuzzifier.getVariablesNames();
 
                         Inference inference = new Inference(fuzzifiedVariables, rules);
-                        LinguisticVariable outPutVariable = inference.solveRules();
+                        LinguisticVariable outputVariable = inference.solveRules();
 
-                        Defuzzifier defuzzifier = new Defuzzifier(outPutVariable);
+                        Defuzzifier defuzzifier = new Defuzzifier(outputVariable);
                         Double result = defuzzifier.performDefuzzification();
+                        fuzzifier.fuzzification(outputVariable,result);
+                        String prediction= " ";
+                        Double max = 0.0;
+                        for(Map.Entry<String,List<Double>> answers:outputVariable.getFuzzificationAnswer().entrySet()){
+                            for(Double answer:answers.getValue()){
+                                if(answer > max){
+                                    max = answer;
+                                    prediction = answers.getKey();
+                                }
+                            }
+                        }
+                        System.out.println("predicted " +  outputVariable.getName() +" is " + prediction);
                         System.out.println(result);
                         break;
 
